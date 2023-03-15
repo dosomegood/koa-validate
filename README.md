@@ -8,7 +8,7 @@ koa-validate
 
 [![NPM](https://nodei.co/npm/koa-validate.png?downloads=true&downloadRank=true&stars=true)](https://nodei.co/npm/koa-validate/)
 
-validate koa request params and format request params 
+validate koa request params and format request params
 
 ## Installation
 ```
@@ -32,7 +32,7 @@ router.post('/signup', function * () {
 	this.checkBody('password').notEmpty().len(3, 20).md5();
 	//empty() mean this param can be a empty string.
 	this.checkBody('nick').optional().empty().len(3, 20);
-	//also we can get the sanitized value 
+	//also we can get the sanitized value
 	var age = this.checkBody('age').toInt().value;
 	yield this.checkFile('icon').notEmpty().size(0,300*1024,'file too large').move("/static/icon/" , function*(file,context){
 		//resize image
@@ -43,7 +43,7 @@ router.post('/signup', function * () {
 	}
 });
 router.get('/users', function * () {
-	this.checkQuery('department').empty().in(["sale","finance"], "not support this department!").len(3, 20);	
+	this.checkQuery('department').empty().in(["sale","finance"], "not support this department!").len(3, 20);
 	this.checkQuery('name').empty().len(2,20,"bad name.").trim().toLow();
 	this.checkQuery('age').empty().gt(10,"too young!").lt(30,"to old!").toInt();
 	if (this.errors) {
@@ -58,10 +58,10 @@ router.get('/user/:id', function * () {
 		return;
 	}
 });
-//json body,we can check it using [json path](https://github.com/flitbit/json-path)(like xpath)
+//json body,we can check it using [jsonpath-plus](https://github.com/JSONPath-Plus/JSONPath)
 router.post('/json' , function*(){
-	this.checkBody('/store/book[0]/price').get(0).eq(8.95);
-	this.checkBody('#/store/book[0]/category').first().trim().eq('reference');
+	this.checkBody("$.store.book[0].price").get(0).eq(8.95);
+	this.checkBody("$['store']['book'][0]['category']").first().trim().eq('reference');
 	if (this.errors) {
 		this.body = this.errors;
 		return;
@@ -168,14 +168,14 @@ when use `require('koa-validate')(app)` ,the request context will bind the metho
 - **ltrim([chars])** -  trim characters from the left-side of the param.
 - **rtrim([chars])** -  trim characters from the right-side of the param.
 - **escape()** -  replace <, >, & and " with HTML entities.
-- **stripLow()** -  remove characters with a numerical value < 32 and 127, mostly control characters. 
+- **stripLow()** -  remove characters with a numerical value < 32 and 127, mostly control characters.
 - **whitelist(value)** - remove characters that do not appear in the whitelist.
 - **blacklist(value)** - remove characters that appear in the blacklist.
 - **encodeURI()** - ref mdn [encodeURI](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/encodeURI)
 - **decodeURI([tip])** - ref mdn [decodeURI](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/decodeURI)
 - **encodeURIComponent()** - ref mdn [encodeURIComponent](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/encodeURIComponent)
 - **decodeURIComponent([tip])** - ref mdn [decodeURIComponent](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/decodeURIComponent)
-- **replace(regexp|substr, newSubStr|function)** - the same as [String](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/replace) replace 
+- **replace(regexp|substr, newSubStr|function)** - the same as [String](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/replace) replace
 - **clone(newKey,[newValue])** - clone current value to the new key, if newValue supplied , use it. eg. `this.checkBody('v1').clone('md5').md5()`; then your can use `this.request.body.md5`.
 - **encodeBase64()** - encode current value to base64 string.
 - **decodeBase64([inBuffer],[tip])** - decode current base64 to a normal string,if inBuffer is true , the value will be a Buffer.

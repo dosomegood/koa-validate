@@ -6,7 +6,7 @@ appFactory = require('./appFactory.js');
 require('should');
 
 describe('koa-validate' , function(){
-	it("these validates should be to ok" , function(done){
+	it("returns OK when for all passing validators" , function(done){
 		var app = appFactory.create(1);
 		app.router.post('/validate',function*(){
 			this.checkBody('optional').optional().len(3,20);
@@ -54,7 +54,7 @@ describe('koa-validate' , function(){
 			this.checkBody('low').isLowercase();
 			this.checkBody('up').isUppercase();
 			this.checkBody('div').isDivisibleBy(3);
-			this.checkBody('n').isNull();
+			this.checkBody('n').isEmpty();
 			this.checkBody('len').isLength(1,4);
 			this.checkBody('byteLenght').isByteLength(4,6);
 			this.checkBody('uuid').isUUID();
@@ -79,16 +79,17 @@ describe('koa-validate' , function(){
 			this.checkBody('mac').isMACAddress();
 			this.checkBody('isin').isISIN();
 			this.checkBody('fqdn').isFQDN();
+			this.checkBody('exists').exist();
 			if(this.errors){
 				this.body = this.errors;
-				 return;
+				return;
 			}
 			if(8 !== this.request.body.age){
 				this.body= 'failed';
 			}
 			this.body= 'ok';
 		});
-		var req = request(app.listen());
+		var req = request(app.callback());
 
 		req.post('/validate')
 		.send({
@@ -148,14 +149,15 @@ describe('koa-validate' , function(){
 			mac:"C8:3A:35:CC:ED:80",
 			isin:"US0378331005",
 			fqdn:"www.google.com",
+			exists: "here",
 		})
 		.expect(200)
 		.expect('ok' ,done);
 	});
 
-	it("these validates fail tests should be to ok" , function(done){
+	it("returns errors for failing validators" , function(done){
 		var app = appFactory.create();
-		app.router.post('/validate',function*(){
+		app.router.post('/validate',function*(ctx){
 			this.checkBody('name').notEmpty().len(3,20);
 			this.checkBody('notEmpty').notEmpty();
 			this.checkBody('blank').notBlank();
@@ -168,7 +170,7 @@ describe('koa-validate' , function(){
 			this.checkBody('float_').isFloat();
 			this.checkBody('in').in([1,2]);
 			this.checkBody('eq').eq("eq");
-			this.checkBody('neq').neq("eq");
+			this.checkBody('notEqualTest').neq("equal");
 			this.checkBody('number4').gt(5);
 			this.checkBody('number4').lt(3);
 			this.checkBody('number4').ge(5);
@@ -190,7 +192,7 @@ describe('koa-validate' , function(){
 			this.checkBody('low').isLowercase();
 			this.checkBody('up').isUppercase();
 			this.checkBody('div').isDivisibleBy(3);
-			this.checkBody('n').isNull();
+			this.checkBody('n').isEmpty();
 			this.checkBody('len').isLength(3,4);
 			this.checkBody('len1').isLength(3,4);
 			this.checkBody('byteLength').isByteLength(4,6);
@@ -217,14 +219,14 @@ describe('koa-validate' , function(){
 			this.checkBody('isin').isISIN();
 			this.checkBody('fqdn').isFQDN();
 			this.checkBody('fqdn1').isFQDN();
-			if(this.errors.length === 61){
-				this.body = this.errors;
+			this.checkBody('exists').exist();
+			if(this.errors.length === 62){
 				this.body = 'ok';
 				return ;
 			}
 			this.body= 'only '+this.errors.length+' errors';
 		});
-		var req = request(app.listen());
+		var req = request(app.callback());
 
 		req.post('/validate')
 		.send({
@@ -239,10 +241,10 @@ describe('koa-validate' , function(){
 			integer2:"100",
 			float_:'a1.23',
 			in:'fd',
-			eq:"neq",
-			neq:'eq',
+			eq:"this does not equal eq",
+			notEqualTest:'equal',
 			number4:'4',
-			contains:"hello" , 
+			contains:"hello" ,
 			notContains:"h f",
 			url:"google",
 			ip:'192.168.',
@@ -285,9 +287,9 @@ describe('koa-validate' , function(){
 		.expect(200)
 		.expect('ok' ,done);
 	});
-	
-	it('there validate query should be to okay' , function(done){
-		var app = appFactory.create();
+
+	it('validates query parameters' , function(done){
+		const app = appFactory.create();
 		app.router.get('/query',function*(){
 			this.checkQuery('name').notEmpty();
 			this.checkQuery('password').len(3,20);
@@ -297,7 +299,7 @@ describe('koa-validate' , function(){
 			}
 			this.body = 'ok';
 		});
-		request(app.listen())
+		request(app.callback())
 		.get('/query')
 		.query({
 			name:'jim',
@@ -305,7 +307,7 @@ describe('koa-validate' , function(){
 		}).expect(200)
 		.expect('ok' , done);
 	});
-	it('there validate params should be to okay' , function(done){
+	it('validates url parameters' , function(done){
 		var app = appFactory.create();
 		app.router.get('/:id',function*(){
 			this.checkParams('id').isInt();
@@ -315,7 +317,7 @@ describe('koa-validate' , function(){
 			}
 			this.body = 'ok';
 		});
-		request(app.listen())
+		request(app.callback())
 		.get('/123')
 		.expect(200)
 		.expect('ok' , done);
@@ -358,7 +360,6 @@ describe('koa-validate' , function(){
 			this.checkBody('hash').clone('sha1').sha1();
 			this.checkBody('hash').clone('num1' ,1);
 			this.checkBody('json').toJson();
-			//console.log(this.request.body)
 			if(this.errors){
 				this.body = this.errors;
 				 return;
@@ -447,7 +448,7 @@ describe('koa-validate' , function(){
 			}
 			this.body = 'ok';
 		});
-		request(app.listen())
+		request(app.callback())
 		.post('/sanitizers')
 		.send({
 			int_:'20',
