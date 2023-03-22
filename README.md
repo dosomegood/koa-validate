@@ -1,12 +1,11 @@
 koa-validate
 ============
 
-[![Build Status](https://travis-ci.org/RocksonZeta/koa-validate.svg?branch=master)](https://travis-ci.org/RocksonZeta/koa-validate)
-[![Coverage Status](https://coveralls.io/repos/RocksonZeta/koa-validate/badge.png?branch=master)](https://coveralls.io/r/RocksonZeta/koa-validate?branch=master)
-[![NPM version](https://badge.fury.io/js/koa-validate.svg)](http://badge.fury.io/js/koa-validate)
-[![Dependency Status](https://david-dm.org/RocksonZeta/koa-validate.svg)](https://david-dm.org/RocksonZeta/koa-validate)
 
-[![NPM](https://nodei.co/npm/koa-validate.png?downloads=true&downloadRank=true&stars=true)](https://nodei.co/npm/koa-validate/)
+**NOTE: This is a fork and the readme has not been updated to reflect changes
+**
+
+[![NPM](https://nodei.co/npm/@jfranchi/koa-validate.png?downloads=true&downloadRank=true&stars=true)](https://nodei.co/npm/@jfranchi/koa-validate/)
 
 validate koa request params and format request params
 
