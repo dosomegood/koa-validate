@@ -640,8 +640,8 @@ Validator.prototype.replace = function(a,b) {
   return this;
 };
 Validator.prototype.encodeBase64 = function() {
-  if (this.goOn && !this.hasError()&&this.value) {
-    this.value = this.params[this.key] = new Buffer(this.value).toString('base64');
+  if (this.goOn && !this.hasError() && this.value) {
+    this.value = this.params[this.key] = Buffer.from(this.value).toString('base64');
   }
   return this;
 };
@@ -649,9 +649,9 @@ Validator.prototype.decodeBase64 = function(inBuffer ,tip) {
   if (!this.hasError()&&this.value) {
     try{
       if(inBuffer){
-        this.value = this.params[this.key] = new Buffer(this.value , 'base64');
+        this.value = this.params[this.key] = Buffer.from(this.value, 'base64');
       }else{
-        this.value = this.params[this.key] = new Buffer(this.value , 'base64').toString();
+        this.value = this.params[this.key] = new Buffer.from(this.value , 'base64').toString();
       }
     }catch(e){
       this.addError(tip||"bad base64 format value");
