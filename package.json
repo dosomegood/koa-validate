@@ -27,10 +27,11 @@
     "validator": "^13.9.0"
   },
   "devDependencies": {
+    "@koa/router": "*",
     "coveralls": "*",
-    "koa": "*",
+    "koa": "2",
     "koa-body": "^4",
-    "koa-router": "^4",
+    "koa-convert": "^2.0.0",
     "mocha": "^10",
     "mocha-lcov-reporter": "*",
     "nyc": "^15.1.0",
