@@ -59,9 +59,11 @@ describe("koa-validate", function () {
         this.checkBody("div").isDivisibleBy(3);
         this.checkBody("n").isEmpty();
         this.checkBody("len").isLength(1, 4);
-        this.checkBody("byteLenght").isByteLength(4, 6);
+        this.checkBody("byteLength").isByteLength(4, 6);
         this.checkBody("uuid").isUUID();
         this.checkBody("date").isDate();
+        this.checkBody("date").isDateLike();
+        this.checkBody("dateISO").isDateLike();
         this.checkBody("time").isTime();
         this.checkBody("after").isAfter("2014-08-06");
         this.checkBody("before").isBefore("2014-08-08");
@@ -132,10 +134,11 @@ describe("koa-validate", function () {
         up: "HELLO",
         div: "21",
         n: "",
-        byteLenght: "你好",
+        byteLength: "你好",
         uuid: "c8162b90-fdda-4803-843b-ed5851480c86",
         time: "13:12:00",
         date: "2014-08-07",
+        dateISO: "2024-10-20T20:54:30.742Z",
         after: "2014-08-07",
         before: "2014-08-07",
         credit: "4063651340421805",

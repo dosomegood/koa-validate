@@ -428,6 +428,17 @@ Validator.prototype.isDate = function (tip) {
   }
   return this;
 };
+Validator.prototype.isDateLike = function (tip) {
+  if (
+    this.goOn &&
+    !util.types.isDate(this.value) &&
+    (!isString(this.value) ||
+      !(v.isDate(this.value) || v.isISO8601(this.value)))
+  ) {
+    this.addError(tip || this.key + " is not a date format.");
+  }
+  return this;
+};
 Validator.prototype.isTime = function (tip) {
   var timeReg = /^(([0-1]?[0-9])|([2][0-3])):([0-5]?[0-9])(:([0-5]?[0-9]))?$/;
   if (this.goOn && !timeReg.test(this.value)) {
