@@ -3,6 +3,7 @@
 var koa = require("koa"),
   request = require("supertest"),
   appFactory = require("./appFactory.js");
+const convert = require("koa-convert");
 require("should");
 
 describe("koa-validate nobody", function () {

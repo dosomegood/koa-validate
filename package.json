@@ -1,6 +1,6 @@
 {
-  "name": "@jfranchi/koa-validate",
-  "version": "3.2.0",
+  "name": "@dosomegood/koa-validate",
+  "version": "4.0.0",
   "description": "A koa params validate middleware.",
   "main": "validate.js",
   "scripts": {
@@ -10,7 +10,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/jonfranchi/koa-validate.git"
+    "url": "https://github.com/dosomegood/koa-validate.git"
   },
   "keywords": [
     "web",
@@ -23,22 +23,22 @@
   ],
   "license": "MIT",
   "dependencies": {
-    "jsonpath-plus": "^10.1.0",
-    "validator": "^13.9.0"
+    "jsonpath-plus": "10.3.0",
+    "validator": "13.15.15"
   },
   "devDependencies": {
     "@koa/router": "*",
     "coveralls": "*",
-    "koa": "2",
+    "koa": "*",
     "koa-body": "^4",
     "koa-convert": "^2.0.0",
-    "mocha": "^10",
+    "mocha": "11.7.4",
     "mocha-lcov-reporter": "*",
-    "nyc": "^15.1.0",
+    "nyc": "17.1.0",
     "should": "*",
-    "supertest": "^6.3.3"
+    "supertest": "7.1.4"
   },
   "engines": {
-    "node": ">= 0.11.9"
+    "node": "> 22"
   }
 }
