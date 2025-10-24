@@ -357,6 +357,8 @@ describe("koa-validate", function () {
         this.checkBody("bool").toBoolean();
         this.checkBody("falseValue").notEmpty("value is empty").toBoolean();
         this.checkBody("date").toDate();
+        this.checkBody("isoDate").toDateCoerce();
+        this.checkBody("fullDate").toDateCoerce();
         this.checkBody("trim").trim();
         this.checkBody("ltrim").ltrim();
         this.checkBody("rtrim").rtrim();
@@ -404,7 +406,16 @@ describe("koa-validate", function () {
         if (new Date("2014-01-01").getTime() !== body.date.getTime()) {
           this.throw(500);
         }
-
+        if (
+          new Date("2014-01-01T12:00:00Z").getTime() !== body.isoDate.getTime()
+        ) {
+          this.throw(500);
+        }
+        if (
+          new Date("2014-01-01T12:00:00Z").getTime() !== body.fullDate.getTime()
+        ) {
+          this.throw(500);
+        }
         if ("jim" != body.trim) {
           this.throw(500);
         }
@@ -476,6 +487,8 @@ describe("koa-validate", function () {
         bool: "1",
         falseValue: "false",
         date: "2014-01-01",
+        isoDate: "2014-01-01T12:00:00Z",
+        fullDate: new Date("2014-01-01T12:00:00Z"),
         trim: " jim ",
         ltrim: " jim ",
         rtrim: " jim ",

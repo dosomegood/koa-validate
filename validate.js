@@ -580,6 +580,21 @@ Validator.prototype.toDate = function () {
   }
   return this;
 };
+Validator.prototype.toDateCoerce = function () {
+  if (this.goOn && !this.hasError()) {
+    // If it's already a date, don't coerce it
+    if (util.types.isDate(this.value)) {
+      return this;
+    } else {
+      // If it's an ISO8601 string, parse it directly
+      this.isISO8601();
+      if (this.goOn && !this.hasError()) {
+        this.value = this.params[this.key] = new Date(this.value);
+      }
+    }
+  }
+  return this;
+};
 Validator.prototype.toInt = function (tip, radix, options) {
   this.isInt(tip, options);
   if (this.goOn && !this.hasError()) {
